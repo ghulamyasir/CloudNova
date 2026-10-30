@@ -1,0 +1,413 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CloudNova | Advanced Admin Console</title>
+
+<style>
+:root {
+  --bg:#080d19; --panel:#111a2b; --panel2:#151f33;
+  --border:#25334b; --text:#edf3ff; --muted:#91a1bd;
+  --cyan:#37d9e8; --green:#4ade9b; --orange:#ffbd69;
+  --red:#ff7185; --purple:#aa94ff;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0; font-family:Inter,Segoe UI,Arial,sans-serif;
+  background:var(--bg); color:var(--text);
+}
+button,input,select { font:inherit; }
+button { cursor:pointer; }
+a { text-decoration:none; color:inherit; }
+.layout { display:flex; min-height:100vh; }
+.sidebar {
+  width:245px; flex-shrink:0; padding:25px 16px;
+  background:#0b1221; border-right:1px solid var(--border);
+}
+.brand { font-size:23px; font-weight:800; padding:0 10px 30px; }
+.brand span { color:var(--cyan); }
+.eyebrow { color:#657895; font-size:10px; letter-spacing:1.7px; margin:22px 10px 10px; }
+.nav {
+  display:block; width:100%; border:0; text-align:left;
+  padding:12px; margin:4px 0; border-radius:9px;
+  background:transparent; color:var(--muted);
+}
+.nav:hover,.nav.active { background:#172940; color:var(--cyan); }
+.sidebar-bottom { margin-top:35px; padding:13px; background:#111a2b; border-radius:10px; }
+.main { flex:1; min-width:0; }
+.topbar {
+  min-height:78px; display:flex; justify-content:space-between;
+  align-items:center; gap:15px; flex-wrap:wrap;
+  padding:17px 30px; border-bottom:1px solid var(--border);
+  background:#0b1221;
+}
+.search { padding:10px 12px; border:1px solid var(--border); background:var(--panel); color:white; border-radius:8px; width:min(260px,60vw); }
+.profile { display:flex; align-items:center; gap:11px; }
+.avatar {
+  display:grid; place-items:center; width:38px; height:38px;
+  border-radius:12px; background:#243957; color:var(--cyan); font-weight:bold;
+}
+.content { padding:28px 30px; max-width:1600px; margin:auto; }
+.heading { display:flex; justify-content:space-between; align-items:center; gap:15px; flex-wrap:wrap; }
+h1 { font-size:27px; margin:0 0 8px; }
+h2 { font-size:17px; margin:0 0 18px; }
+p { color:var(--muted); }
+.small { font-size:12px; color:var(--muted); }
+.btn {
+  border:1px solid var(--border); background:var(--panel2);
+  color:var(--text); border-radius:8px; padding:10px 13px;
+}
+.btn.primary { background:var(--cyan); color:#06121b; border-color:var(--cyan); font-weight:700; }
+
+.btn.logout-btn {
+  border-color:var(--red);
+  color:var(--red);
+  background:transparent;
+  font-weight:600;
+}
+.btn.logout-btn:hover {
+  background:var(--red);
+  color:#080d19;
+}
+.btn.logout-btn:disabled {
+  opacity:.6;
+  cursor:wait;
+}
+
+.grid { display:grid; gap:16px; margin-top:23px; }
+.metrics { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.card {
+  min-width:0; padding:20px; border:1px solid var(--border);
+  border-radius:13px; background:linear-gradient(145deg,#131e31,#0f1728);
+}
+.metric-top { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+.metric-icon { display:grid; place-items:center; width:38px; height:38px; border-radius:10px; background:#1a3043; color:var(--cyan); }
+.value { font-size:29px; font-weight:750; margin:17px 0 5px; }
+.good { color:var(--green); } .warn { color:var(--orange); }
+.charts { grid-template-columns:minmax(0,1.6fr) minmax(260px,1fr); }
+.chart { height:210px; width:100%; display:block; }
+.legend { display:flex; gap:15px; flex-wrap:wrap; font-size:12px; color:var(--muted); margin-top:10px; }
+.dot { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; background:var(--cyan); }
+.dot.purple { background:var(--purple); }
+.bars { display:flex; align-items:end; height:135px; gap:10px; padding-top:12px; }
+.bar-col { flex:1; text-align:center; color:var(--muted); font-size:11px; }
+.bar { margin-bottom:8px; min-height:5px; border-radius:5px 5px 2px 2px; background:linear-gradient(#37d9e8,#287caa); }
+.health-row { display:flex; justify-content:space-between; gap:10px; font-size:13px; margin:20px 0 8px; }
+.track { height:7px; background:#253149; border-radius:10px; overflow:hidden; }
+.fill { height:100%; border-radius:10px; background:var(--cyan); }
+.fill.green { background:var(--green); } .fill.orange { background:var(--orange); }
+.table-card { margin-top:20px; }
+.table-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; min-width:600px; }
+th,td { text-align:left; padding:14px 12px; border-bottom:1px solid var(--border); font-size:13px; }
+th { color:var(--muted); font-weight:500; }
+.status { display:inline-block; border-radius:20px; padding:5px 9px; font-size:11px; background:#16352f; color:var(--green); }
+.status.pending { background:#3a3020; color:var(--orange); }
+.status.offline { background:#3b202b; color:var(--red); }
+.page { display:none; }
+.page.active { display:block; }
+.log { padding:12px 0; border-bottom:1px solid var(--border); font-size:13px; }
+.log time { display:block; font-size:11px; color:var(--muted); margin-top:5px; }
+.notice { margin-top:18px; padding:12px 14px; border:1px solid #56472b; border-radius:9px; color:#e9c98d; background:#251f16; font-size:12px; }
+input,select { background:#0b1322; color:var(--text); border:1px solid var(--border); border-radius:7px; padding:10px; }
+.field { display:grid; gap:8px; margin:14px 0; color:var(--muted); font-size:13px; }
+footer { padding:25px 30px; color:#667994; font-size:12px; }
+
+@media(max-width:1050px) {
+  .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .sidebar { width:205px; }
+  .charts { grid-template-columns:1fr; }
+}
+@media(max-width:650px) {
+  .layout { display:block; }
+  .sidebar { width:100%; padding:14px; border-right:0; border-bottom:1px solid var(--border); }
+  .brand { padding:5px 8px 12px; }
+  .eyebrow,.sidebar-bottom { display:none; }
+  .nav { display:inline-block; width:auto; padding:9px; font-size:12px; }
+  .topbar { padding:14px; }
+  .content { padding:20px 14px; }
+  .metrics { gap:10px; }
+  .card { padding:15px; }
+  .value { font-size:23px; }
+  .profile { gap:7px; }
+  .profile strong { font-size:13px; }
+  .btn.logout-btn { padding:9px 10px; font-size:12px; }
+}
+</style>
+</head>
+
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">Cloud<span>Nova</span><div class="small">ADMIN CONSOLE</div></div>
+
+    <div class="eyebrow">WORKSPACE</div>
+    <button class="nav active" data-page="overview">▦ &nbsp; Overview</button>
+    <button class="nav" data-page="infrastructure">▤ &nbsp; Infrastructure</button>
+    <button class="nav" data-page="users">♙ &nbsp; User Management</button>
+    <button class="nav" data-page="activity">◷ &nbsp; Activity Logs</button>
+
+    <div class="eyebrow">SYSTEM</div>
+    <button class="nav" data-page="settings">⚙ &nbsp; Settings</button>
+    <a class="nav" href="index.html">↗ &nbsp; View Website</a>
+
+    <div class="sidebar-bottom">
+      <div class="small">PROJECT ENVIRONMENT</div>
+      <p style="margin:9px 0 4px;color:var(--green)">● Development</p>
+      <div class="small">AWS EC2 · Ubuntu Linux</div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <input class="search" id="search" placeholder="Search current table...">
+
+      <!-- Dynamic admin profile -->
+      <div class="profile">
+        <div style="text-align:right">
+          <strong id="adminName">Loading...</strong>
+          <div class="small" id="adminEmail">Loading email...</div>
+        </div>
+
+        <div class="avatar" id="adminAvatar">AD</div>
+
+        <button class="btn logout-btn" id="logoutBtn">
+          ↪ Logout
+        </button>
+      </div>
+    </header>
+
+    <div class="content">
+      <section class="page active" id="overview">
+        <div class="heading">
+          <div><h1>Command Center</h1><p style="margin:0">Cloud infrastructure at a glance.</p></div>
+          <button class="btn" id="refresh">↻ Refresh Demo</button>
+        </div>
+
+        <div class="grid metrics">
+          <div class="card"><div class="metric-top"><span class="small">Total Users</span><span class="metric-icon">♙</span></div><div class="value">128</div><span class="small good">↑ 12 this month</span></div>
+          <div class="card"><div class="metric-top"><span class="small">Active Services</span><span class="metric-icon">▤</span></div><div class="value">06</div><span class="small good">Demo service inventory</span></div>
+          <div class="card"><div class="metric-top"><span class="small">Requests Today</span><span class="metric-icon">⇄</span></div><div class="value" id="requests">8,421</div><span class="small good">Illustrative traffic</span></div>
+          <div class="card"><div class="metric-top"><span class="small">Alerts</span><span class="metric-icon">⚠</span></div><div class="value">02</div><span class="small warn">Review demo alerts</span></div>
+        </div>
+
+        <div class="grid charts">
+          <div class="card">
+            <h2>Traffic Analytics <span class="small">/ last 7 days</span></h2>
+            <svg class="chart" viewBox="0 0 600 210" preserveAspectRatio="none" role="img" aria-label="Illustrative traffic trend chart">
+              <g stroke="#25334b" stroke-width="1">
+                <line x1="35" y1="25" x2="590" y2="25"/><line x1="35" y1="70" x2="590" y2="70"/>
+                <line x1="35" y1="115" x2="590" y2="115"/><line x1="35" y1="160" x2="590" y2="160"/>
+              </g>
+              <polygon points="35,145 125,112 215,128 305,65 395,90 485,45 580,62 580,180 35,180" fill="#37d9e8" opacity=".12"/>
+              <polyline points="35,145 125,112 215,128 305,65 395,90 485,45 580,62" fill="none" stroke="#37d9e8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="35,162 125,145 215,153 305,128 395,140 485,112 580,126" fill="none" stroke="#aa94ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <g fill="#91a1bd" font-size="11"><text x="30" y="202">Mon</text><text x="118" y="202">Tue</text><text x="208" y="202">Wed</text><text x="298" y="202">Thu</text><text x="388" y="202">Fri</text><text x="478" y="202">Sat</text><text x="565" y="202">Sun</text></g>
+            </svg>
+            <div class="legend"><span><i class="dot"></i>Requests</span><span><i class="dot purple"></i>Previous period</span></div>
+          </div>
+
+          <div class="card">
+            <h2>Server Resource Usage</h2>
+            <div class="health-row"><span>CPU utilization</span><strong>34%</strong></div><div class="track"><div class="fill" style="width:34%"></div></div>
+            <div class="health-row"><span>Memory usage</span><strong>62%</strong></div><div class="track"><div class="fill green" style="width:62%"></div></div>
+            <div class="health-row"><span>Storage usage</span><strong>48%</strong></div><div class="track"><div class="fill orange" style="width:48%"></div></div>
+            <div class="notice">Demo metrics only. Connect server monitoring for real measurements.</div>
+          </div>
+        </div>
+
+        <div class="card table-card">
+          <h2>Recent System Events</h2>
+          <div class="table-wrap"><table class="searchable">
+            <thead><tr><th>Event</th><th>Component</th><th>Time</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Application deployment</td><td>Web Server</td><td>10:42 AM</td><td><span class="status">Demo</span></td></tr>
+              <tr><td>Database connection check</td><td>MySQL</td><td>10:28 AM</td><td><span class="status pending">Pending setup</span></td></tr>
+              <tr><td>Resource review</td><td>EC2 Instance</td><td>09:55 AM</td><td><span class="status">Demo</span></td></tr>
+            </tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <section class="page" id="infrastructure">
+        <div class="heading"><div><h1>Infrastructure</h1><p style="margin:0">Server and service inventory.</p></div></div>
+        <div class="grid metrics">
+          <div class="card"><div class="small">Cloud Provider</div><div class="value">AWS</div><p class="small">EC2 instance</p></div>
+          <div class="card"><div class="small">Operating System</div><div class="value">Linux</div><p class="small">Ubuntu Server</p></div>
+          <div class="card"><div class="small">Web Server</div><div class="value">Nginx</div><p class="small">Installed on EC2</p></div>
+          <div class="card"><div class="small">Database</div><div class="value">MySQL</div><p class="small">Planned integration</p></div>
+        </div>
+
+        <div class="card table-card"><h2>Configured Resources</h2><div class="table-wrap"><table class="searchable">
+          <thead><tr><th>Resource</th><th>Platform</th><th>Role</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Ubuntu EC2</td><td>AWS</td><td>Linux web server</td><td><span class="status">Created</span></td></tr>
+            <tr><td>Nginx</td><td>Ubuntu</td><td>HTTP web server</td><td><span class="status">Installed</span></td></tr>
+            <tr><td>Node.js API</td><td>Ubuntu</td><td>Backend service</td><td><span class="status pending">Planned</span></td></tr>
+            <tr><td>MySQL database</td><td>Ubuntu</td><td>Application data</td><td><span class="status pending">Planned</span></td></tr>
+          </tbody>
+        </table></div></div>
+      </section>
+
+      <section class="page" id="users">
+        <div class="heading"><div><h1>User Management</h1><p style="margin:0">Sample account directory.</p></div><button class="btn primary" id="addUser">+ Add Demo User</button></div>
+        <div class="card table-card"><div class="table-wrap"><table class="searchable" id="usersTable">
+          <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Alex Morgan</td><td>alex@example.com</td><td>User</td><td><span class="status">Demo</span></td></tr>
+            <tr><td>Sam Taylor</td><td>sam@example.com</td><td>User</td><td><span class="status">Demo</span></td></tr>
+            <tr><td>Jordan Lee</td><td>jordan@example.com</td><td>Manager</td><td><span class="status pending">Review</span></td></tr>
+          </tbody>
+        </table></div><p class="small">Sample rows only; no real accounts are loaded.</p></div>
+      </section>
+
+      <section class="page" id="activity">
+        <h1>Activity Logs</h1><p>Illustrative events for the CloudNova project.</p>
+        <div class="card">
+          <div class="log">● Admin dashboard opened<time>Just now · Browser demo</time></div>
+          <div class="log">● Nginx web server installed<time>Earlier · AWS Ubuntu server setup</time></div>
+          <div class="log">● CloudNova frontend started<time>Project setup · Local development</time></div>
+          <div class="log">● MySQL integration planned<time>Next stage · Backend development</time></div>
+        </div>
+      </section>
+
+      <section class="page" id="settings">
+        <h1>System Settings</h1><p>Project configuration overview.</p>
+        <div class="card">
+          <label class="field">Project Name<input value="CloudNova" id="projectName"></label>
+          <label class="field">Cloud Provider<select id="provider"><option>AWS</option><option>Google Cloud Platform</option><option>Microsoft Azure</option></select></label>
+          <label class="field">Environment<select id="environment"><option>Development</option><option>Testing</option><option>Production</option></select></label>
+          <button class="btn primary" id="saveSettings">Save Demo Settings</button>
+          <p id="settingsMessage" class="small"></p>
+          <div class="notice">These settings only affect this page demo. Authentication, permissions and persistent storage are not implemented yet.</div>
+        </div>
+      </section>
+    </div>
+
+    <footer>CloudNova Admin Console · Frontend demonstration · AWS cloud infrastructure project</footer>
+  </main>
+</div>
+
+<script>
+// Check admin session and load actual admin profile
+(async function checkAdminSession() {
+  try {
+    const response = await fetch("/api/me", {
+      credentials: "same-origin"
+    });
+
+    if (!response.ok) {
+      window.location.replace("/login.html");
+      return;
+    }
+
+    const data = await response.json();
+
+    if (!data.success || !data.user || data.user.role !== "admin") {
+      window.location.replace("/login.html");
+      return;
+    }
+
+    // Load actual logged-in admin details
+    const admin = data.user;
+
+    document.getElementById("adminName").textContent =
+      admin.name || "Administrator";
+
+    document.getElementById("adminEmail").textContent =
+      admin.email || "Admin Account";
+
+    // Generate avatar initials
+    const initials = (admin.name || "AD")
+      .trim()
+      .split(/\s+/)
+      .map(word => word.charAt(0))
+      .join("")
+      .substring(0, 2)
+      .toUpperCase();
+
+    document.getElementById("adminAvatar").textContent = initials;
+
+  } catch (error) {
+    console.error("Admin session error:", error);
+    window.location.replace("/login.html");
+  }
+})();
+
+const navButtons = document.querySelectorAll(".nav[data-page]");
+const pages = document.querySelectorAll(".page");
+
+navButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    navButtons.forEach(item => item.classList.remove("active"));
+    pages.forEach(page => page.classList.remove("active"));
+    button.classList.add("active");
+    document.getElementById(button.dataset.page).classList.add("active");
+    document.getElementById("search").value = "";
+    filterTable("");
+  });
+});
+
+function filterTable(query) {
+  const activePage = document.querySelector(".page.active");
+  if (!activePage) return;
+  activePage.querySelectorAll("table tbody tr").forEach(row => {
+    row.style.display = row.innerText.toLowerCase().includes(query.toLowerCase()) ? "" : "none";
+  });
+}
+
+document.getElementById("search").addEventListener("input", event => {
+  filterTable(event.target.value);
+});
+
+document.getElementById("refresh").addEventListener("click", () => {
+  document.getElementById("requests").textContent =
+    (8000 + Math.floor(Math.random() * 1000)).toLocaleString();
+});
+
+document.getElementById("addUser").addEventListener("click", () => {
+  const body = document.querySelector("#usersTable tbody");
+  const row = body.insertRow();
+  row.innerHTML = "<td>Demo New User</td><td>new-user@example.com</td><td>User</td><td><span class='status'>Demo</span></td>";
+  filterTable(document.getElementById("search").value);
+});
+
+document.getElementById("saveSettings").addEventListener("click", () => {
+  document.getElementById("settingsMessage").textContent =
+    "Demo settings updated on this page. Backend persistence is not connected.";
+});
+
+// Admin logout functionality
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  const confirmLogout = confirm("Are you sure you want to logout?");
+
+  if (!confirmLogout) return;
+
+  const logoutButton = document.getElementById("logoutBtn");
+  logoutButton.disabled = true;
+  logoutButton.textContent = "Logging out...";
+
+  try {
+    const response = await fetch("/api/logout", {
+      method: "POST",
+      credentials: "same-origin"
+    });
+
+    const result = await response.json();
+
+    if (response.ok && result.success) {
+      window.location.replace("/login.html");
+    } else {
+      throw new Error("Logout request failed");
+    }
+  } catch (error) {
+    logoutButton.disabled = false;
+    logoutButton.textContent = "↪ Logout";
+    alert("Logout failed. Please try again.");
+  }
+});
+</script>
+</body>
+</html>

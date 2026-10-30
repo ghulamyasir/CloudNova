@@ -1,0 +1,692 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07111f">
+<title>User Dashboard | CloudNova</title>
+
+<style>
+:root {
+  --bg:#07111f;
+  --sidebar:#0b192b;
+  --panel:#102238;
+  --panel2:#132a42;
+  --text:#f1f7ff;
+  --muted:#91a6bf;
+  --cyan:#42e8e0;
+  --blue:#7aa5ff;
+  --border:rgba(161,190,224,.13);
+  --green:#59dda0;
+  --orange:#ffbd69;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body {
+  font-family:"Segoe UI",Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+}
+a { color:inherit; text-decoration:none; }
+button { font:inherit; cursor:pointer; }
+.layout { display:flex; min-height:100vh; }
+
+.sidebar {
+  width:250px;
+  flex-shrink:0;
+  background:var(--sidebar);
+  border-right:1px solid var(--border);
+  padding:25px 17px;
+  display:flex;
+  flex-direction:column;
+}
+.logo {
+  font-size:23px;
+  font-weight:800;
+  color:var(--cyan);
+  padding:5px 12px 35px;
+}
+.logo span { color:white; }
+.profile-mini {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px 10px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  margin-bottom:30px;
+}
+.avatar {
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,var(--cyan),var(--blue));
+  color:#07111f;
+  font-weight:800;
+}
+.profile-mini strong { display:block; font-size:13px; }
+.profile-mini small { color:var(--muted); font-size:11px; }
+.nav-title {
+  padding:0 12px 12px;
+  color:#657c97;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1.4px;
+}
+.nav-links { display:grid; gap:7px; }
+.nav-links a {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px;
+  border-radius:9px;
+  color:var(--muted);
+  font-size:13px;
+  transition:.2s;
+}
+.nav-links a:hover,.nav-links a.active {
+  background:rgba(66,232,224,.09);
+  color:var(--cyan);
+}
+.nav-links .nav-icon { width:20px; text-align:center; }
+.sidebar-bottom { margin-top:auto; padding-top:25px; }
+.sidebar-bottom a {
+  display:block;
+  padding:12px;
+  color:var(--muted);
+  font-size:13px;
+}
+.sidebar-bottom a:hover { color:var(--cyan); }
+
+.main { flex:1; min-width:0; }
+.topbar {
+  min-height:78px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:15px 35px;
+  border-bottom:1px solid var(--border);
+  background:rgba(7,17,31,.8);
+}
+.topbar-left { display:flex; align-items:center; gap:15px; }
+.menu-btn {
+  display:none;
+  padding:8px 11px;
+  color:var(--text);
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:8px;
+}
+.topbar h2 { font-size:19px; }
+.topbar p { color:var(--muted); font-size:11px; margin-top:3px; }
+.topbar-right { display:flex; align-items:center; gap:15px; }
+.notification {
+  width:37px;
+  height:37px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+}
+.top-user { display:flex; align-items:center; gap:10px; }
+.top-user strong { font-size:12px; display:block; }
+.top-user small { color:var(--muted); font-size:10px; }
+
+.content { padding:32px 35px; max-width:1500px; margin:auto; }
+.welcome {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:20px;
+  margin-bottom:30px;
+}
+.welcome h1 { font-size:29px; letter-spacing:-.8px; }
+.welcome p { color:var(--muted); font-size:13px; margin-top:6px; }
+.btn {
+  border:0;
+  border-radius:9px;
+  padding:11px 17px;
+  font-size:12px;
+  font-weight:700;
+}
+.btn-primary {
+  background:linear-gradient(120deg,var(--cyan),#85c9ff);
+  color:#07111f;
+}
+.btn-outline {
+  background:transparent;
+  color:var(--text);
+  border:1px solid var(--border);
+}
+.btn:hover { filter:brightness(1.1); }
+
+.stats {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:17px;
+  margin-bottom:25px;
+}
+.card {
+  background:linear-gradient(145deg,var(--panel),#0c1b2d);
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:21px;
+}
+.stat-top {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  color:var(--muted);
+  font-size:12px;
+}
+.stat-icon {
+  width:36px;
+  height:36px;
+  display:grid;
+  place-items:center;
+  background:rgba(66,232,224,.09);
+  border-radius:10px;
+  font-size:17px;
+}
+.stat-value { font-size:27px; font-weight:800; margin-top:15px; }
+.stat-note { color:var(--muted); font-size:11px; margin-top:5px; }
+.good { color:var(--green); }
+
+.dashboard-grid {
+  display:grid;
+  grid-template-columns:1.4fr 1fr;
+  gap:18px;
+  margin-bottom:20px;
+}
+.card-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:22px;
+}
+.card-heading h3 { font-size:15px; }
+.card-heading span { color:var(--muted); font-size:11px; }
+
+.chart {
+  height:175px;
+  position:relative;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-around;
+  gap:12px;
+  padding:12px 5px 25px;
+  border-bottom:1px solid var(--border);
+  background:repeating-linear-gradient(
+    to bottom,transparent 0,transparent 42px,
+    rgba(161,190,224,.07) 43px,transparent 44px
+  );
+}
+.bar-group {
+  height:100%;
+  flex:1;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+}
+.bar {
+  width:min(28px,75%);
+  min-height:8px;
+  border-radius:6px 6px 2px 2px;
+  background:linear-gradient(to top,#347dba,var(--cyan));
+  opacity:.9;
+}
+.chart-labels {
+  display:flex;
+  justify-content:space-around;
+  color:var(--muted);
+  font-size:10px;
+  padding-top:10px;
+}
+.usage-row { margin-bottom:21px; }
+.usage-info {
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:9px;
+  font-size:12px;
+}
+.usage-info span:last-child { color:var(--muted); }
+.progress {
+  height:8px;
+  background:#263b52;
+  border-radius:20px;
+  overflow:hidden;
+}
+.progress-fill {
+  height:100%;
+  border-radius:20px;
+  background:linear-gradient(90deg,var(--cyan),var(--blue));
+}
+
+.activity-list { display:grid; gap:0; }
+.activity {
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:15px 0;
+  border-bottom:1px solid var(--border);
+}
+.activity:last-child { border-bottom:0; }
+.activity-icon {
+  width:37px;
+  height:37px;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  background:rgba(66,232,224,.08);
+}
+.activity-info { flex:1; }
+.activity-info strong { font-size:12px; display:block; }
+.activity-info small { color:var(--muted); font-size:10px; }
+.activity-time { color:var(--muted); font-size:10px; }
+
+.status-badge {
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 10px;
+  border-radius:20px;
+  color:var(--green);
+  background:rgba(89,221,160,.09);
+  font-size:10px;
+}
+.status-dot {
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--green);
+}
+.info-banner {
+  margin-top:20px;
+  padding:16px;
+  border:1px solid rgba(66,232,224,.18);
+  background:rgba(66,232,224,.05);
+  color:var(--muted);
+  border-radius:12px;
+  font-size:12px;
+  line-height:1.7;
+}
+.info-banner strong { color:var(--cyan); }
+
+@media(max-width:1100px) {
+  .stats { grid-template-columns:repeat(2,1fr); }
+  .dashboard-grid { grid-template-columns:1fr; }
+}
+@media(max-width:760px) {
+  .sidebar {
+    position:fixed;
+    z-index:20;
+    top:0;
+    bottom:0;
+    left:-260px;
+    transition:left .25s;
+  }
+  .sidebar.open { left:0; }
+  .menu-btn { display:block; }
+  .topbar { padding:14px 18px; }
+  .content { padding:25px 18px; }
+}
+@media(max-width:450px) {
+  .stats { grid-template-columns:1fr; }
+  .welcome h1 { font-size:23px; }
+  .top-user .user-details { display:none; }
+}
+</style>
+</head>
+
+<body>
+<div class="layout">
+
+  <aside class="sidebar" id="sidebar">
+    <a class="logo" href="index.html">☁ Cloud<span>Nova</span></a>
+
+    <div class="profile-mini">
+      <div class="avatar" id="sideAvatar">U</div>
+      <div>
+        <strong id="sideName">Loading...</strong>
+        <small>Standard Account</small>
+      </div>
+    </div>
+
+    <div class="nav-title">USER WORKSPACE</div>
+    <nav class="nav-links">
+      <a href="#overview" class="active"><span class="nav-icon">▦</span> Overview</a>
+      <a href="#usage"><span class="nav-icon">◉</span> Usage & Analytics</a>
+      <a href="#activity"><span class="nav-icon">◷</span> Recent Activity</a>
+      <a href="#account"><span class="nav-icon">♙</span> My Account</a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="nav-title">ACCOUNT</div>
+      <a href="index.html">← Back to Website</a>
+      <a href="login.html" id="logoutLink">↪ Logout</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+        <div>
+          <h2>User Dashboard</h2>
+          <p>CloudNova / User Workspace</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <div class="notification" aria-label="Notifications">♧</div>
+        <div class="top-user">
+          <div class="avatar" id="topAvatar">U</div>
+          <div class="user-details">
+            <strong id="topName">Loading...</strong>
+            <small>Standard User</small>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content" id="overview">
+      <section class="welcome">
+        <div>
+          <h1>Welcome back, <span id="welcomeName">User</span> 👋</h1>
+          <p>Here is your CloudNova workspace overview.</p>
+        </div>
+        <button class="btn btn-primary" id="refreshBtn">↻ Refresh Overview</button>
+      </section>
+
+      <section class="stats">
+        <article class="card">
+          <div class="stat-top">
+            <span>Account Status</span>
+            <div class="stat-icon">♙</div>
+          </div>
+          <div class="stat-value" style="font-size:22px">Active</div>
+          <div class="stat-note good">● Demo account status</div>
+        </article>
+
+        <article class="card">
+          <div class="stat-top">
+            <span>Cloud Storage</span>
+            <div class="stat-icon">▤</div>
+          </div>
+          <div class="stat-value">24 GB</div>
+          <div class="stat-note">Illustrative usage data</div>
+        </article>
+
+        <article class="card">
+          <div class="stat-top">
+            <span>Projects</span>
+            <div class="stat-icon">▦</div>
+          </div>
+          <div class="stat-value">03</div>
+          <div class="stat-note">Demo project count</div>
+        </article>
+
+        <article class="card">
+          <div class="stat-top">
+            <span>Service Status</span>
+            <div class="stat-icon">☁</div>
+          </div>
+          <div class="stat-value" style="font-size:22px">Ready</div>
+          <div class="stat-note good">Interface demonstration</div>
+        </article>
+      </section>
+
+      <section class="dashboard-grid" id="usage">
+        <article class="card">
+          <div class="card-heading">
+            <h3>Usage Analytics</h3>
+            <span>Sample weekly activity</span>
+          </div>
+
+          <div class="chart" aria-label="Illustrative weekly activity chart">
+            <div class="bar-group"><div class="bar" style="height:35%"></div></div>
+            <div class="bar-group"><div class="bar" style="height:60%"></div></div>
+            <div class="bar-group"><div class="bar" style="height:48%"></div></div>
+            <div class="bar-group"><div class="bar" style="height:80%"></div></div>
+            <div class="bar-group"><div class="bar" style="height:55%"></div></div>
+            <div class="bar-group"><div class="bar" style="height:90%"></div></div>
+            <div class="bar-group"><div class="bar" style="height:68%"></div></div>
+          </div>
+
+          <div class="chart-labels">
+            <span>Mon</span><span>Tue</span><span>Wed</span>
+            <span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-heading">
+            <h3>Resource Usage</h3>
+            <span>Demo values</span>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-info"><span>Storage</span><span>60%</span></div>
+            <div class="progress"><div class="progress-fill" style="width:60%"></div></div>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-info"><span>Bandwidth</span><span>45%</span></div>
+            <div class="progress"><div class="progress-fill" style="width:45%"></div></div>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-info"><span>Compute</span><span>35%</span></div>
+            <div class="progress"><div class="progress-fill" style="width:35%"></div></div>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-info"><span>Project quota</span><span>75%</span></div>
+            <div class="progress"><div class="progress-fill" style="width:75%"></div></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="dashboard-grid" id="activity">
+        <article class="card">
+          <div class="card-heading">
+            <h3>Recent Activity</h3>
+            <span>Sample events</span>
+          </div>
+
+          <div class="activity-list">
+            <div class="activity">
+              <div class="activity-icon">🔐</div>
+              <div class="activity-info">
+                <strong>Login interface visited</strong>
+                <small>Account access demonstration</small>
+              </div>
+              <span class="activity-time">Today</span>
+            </div>
+
+            <div class="activity">
+              <div class="activity-icon">☁</div>
+              <div class="activity-info">
+                <strong>Cloud workspace viewed</strong>
+                <small>Dashboard activity example</small>
+              </div>
+              <span class="activity-time">Today</span>
+            </div>
+
+            <div class="activity">
+              <div class="activity-icon">📊</div>
+              <div class="activity-info">
+                <strong>Analytics section opened</strong>
+                <small>Usage interface example</small>
+              </div>
+              <span class="activity-time">Yesterday</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" id="account">
+          <div class="card-heading">
+            <h3>Account Information</h3>
+            <span>Profile preview</span>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-info">
+              <span>Account Name</span>
+              <strong id="accountName">Loading...</strong>
+            </div>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-info">
+              <span>Account Email</span>
+              <strong id="accountEmail">Loading...</strong>
+            </div>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-info">
+              <span>Account Type</span>
+              <strong>Standard User</strong>
+            </div>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-info">
+              <span>Platform</span>
+              <strong>CloudNova</strong>
+            </div>
+          </div>
+
+          <div class="usage-row">
+            <div class="usage-info">
+              <span>Account Status</span>
+              <span class="status-badge">
+                <span class="status-dot"></span> Demo Active
+              </span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <div class="info-banner">
+        <strong>Project demonstration:</strong>
+        Your name and email are loaded from your authenticated server session.
+        Charts, storage, resource usage and activity are sample frontend data,
+        not live cloud metrics.
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+// Load the currently logged-in user's information.
+async function loadUserProfile() {
+  try {
+    const response = await fetch("/api/me");
+
+    if (response.status === 401 || response.status === 403) {
+      window.location.href = "/login.html";
+      return;
+    }
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success || !result.user) {
+      window.location.href = "/login.html";
+      return;
+    }
+
+    const user = result.user;
+    const fullName = user.name || "Cloud User";
+    const firstName = fullName.trim().split(/\s+/)[0];
+    const initial = firstName.charAt(0).toUpperCase();
+
+    document.getElementById("sideName").textContent = fullName;
+    document.getElementById("topName").textContent = fullName;
+    document.getElementById("welcomeName").textContent = firstName;
+    document.getElementById("accountName").textContent = fullName;
+    document.getElementById("accountEmail").textContent = user.email || "Not available";
+
+    document.getElementById("sideAvatar").textContent = initial;
+    document.getElementById("topAvatar").textContent = initial;
+
+  } catch (error) {
+    console.error("Profile loading error:", error);
+    alert("Unable to load your account. Please login again.");
+    window.location.href = "/login.html";
+  }
+}
+
+// Load profile when dashboard opens.
+loadUserProfile();
+
+// Mobile sidebar.
+const sidebar = document.getElementById("sidebar");
+
+document.getElementById("menuBtn").addEventListener("click", function() {
+  sidebar.classList.toggle("open");
+});
+
+// Sidebar navigation.
+document.querySelectorAll(".nav-links a").forEach(function(link) {
+  link.addEventListener("click", function() {
+    document.querySelectorAll(".nav-links a").forEach(function(item) {
+      item.classList.remove("active");
+    });
+
+    link.classList.add("active");
+    sidebar.classList.remove("open");
+  });
+});
+
+// Refresh profile.
+document.getElementById("refreshBtn").addEventListener("click", async function() {
+  const button = this;
+  button.textContent = "Refreshing...";
+
+  await loadUserProfile();
+
+  button.textContent = "✓ Refreshed";
+
+  setTimeout(function() {
+    button.textContent = "↻ Refresh Overview";
+  }, 1500);
+});
+
+// Real logout using the server session.
+document.getElementById("logoutLink").addEventListener("click", async function(event) {
+  event.preventDefault();
+
+  const button = this;
+  button.textContent = "Logging out...";
+
+  try {
+    const response = await fetch("/api/logout", {
+      method: "POST"
+    });
+
+    if (response.ok) {
+      window.location.replace("/login.html");
+    } else {
+      button.textContent = "↪ Logout";
+      alert("Logout failed. Please try again.");
+    }
+
+  } catch (error) {
+    console.error("Logout error:", error);
+    button.textContent = "↪ Logout";
+    alert("Unable to connect to the server.");
+  }
+});
+</script>
+
+</body>
+</html>

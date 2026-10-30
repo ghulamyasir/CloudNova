@@ -1,0 +1,476 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07111f">
+  <title>Create Account | CloudNova</title>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 25px;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: #f1f7ff;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(66,232,224,.13), transparent 35%),
+        radial-gradient(circle at 85% 85%, rgba(100,149,255,.13), transparent 35%),
+        #07111f;
+    }
+
+    .page {
+      width: min(100%, 1000px);
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      overflow: hidden;
+      border: 1px solid rgba(161,190,224,.17);
+      border-radius: 23px;
+      background: #0d1b2d;
+      box-shadow: 0 25px 90px rgba(0,0,0,.3);
+    }
+
+    .info {
+      padding: 48px 38px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: linear-gradient(145deg, #102e40, #0b1a2b);
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: 800;
+      color: #42e8e0;
+      margin-bottom: 55px;
+    }
+
+    .logo span { color: white; }
+
+    .info h1 {
+      font-size: 37px;
+      line-height: 1.2;
+      margin-bottom: 18px;
+    }
+
+    .info p {
+      color: #9aacc2;
+      line-height: 1.8;
+    }
+
+    .features {
+      display: grid;
+      gap: 17px;
+      margin-top: 35px;
+      color: #d7e5f6;
+      font-size: 14px;
+    }
+
+    .features span {
+      color: #42e8e0;
+      margin-right: 9px;
+    }
+
+    .form-area { padding: 42px 45px; }
+
+    .back {
+      color: #9aacc2;
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .back:hover { color: #42e8e0; }
+
+    .form-area h2 {
+      font-size: 30px;
+      margin-top: 27px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #9aacc2;
+      font-size: 14px;
+      margin-bottom: 22px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 15px;
+    }
+
+    .field { margin-bottom: 14px; }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #263b52;
+      border-radius: 10px;
+      outline: none;
+      background: #091626;
+      color: white;
+      font-size: 14px;
+    }
+
+    input:focus {
+      border-color: #42e8e0;
+      box-shadow: 0 0 0 3px rgba(66,232,224,.09);
+    }
+
+    .password-wrap { position: relative; }
+
+    .password-wrap input { padding-right: 65px; }
+
+    .show-password {
+      position: absolute;
+      top: 50%;
+      right: 11px;
+      transform: translateY(-50%);
+      border: 0;
+      background: none;
+      color: #42e8e0;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .strength {
+      height: 5px;
+      margin-top: 9px;
+      border-radius: 20px;
+      background: #263b52;
+      overflow: hidden;
+    }
+
+    .strength-bar {
+      height: 100%;
+      width: 0;
+      border-radius: 20px;
+      transition: width .2s;
+      background: #42e8e0;
+    }
+
+    .strength-text {
+      display: block;
+      margin-top: 5px;
+      color: #9aacc2;
+      font-size: 11px;
+    }
+
+    .terms {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      margin: 14px 0 19px;
+      color: #9aacc2;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .terms input {
+      width: 15px;
+      height: 15px;
+      margin-top: 2px;
+      flex-shrink: 0;
+      accent-color: #42e8e0;
+    }
+
+    a { color: #42e8e0; text-decoration: none; }
+
+    .submit {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(120deg, #42e8e0, #85c9ff);
+      color: #07111f;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .submit:hover { filter: brightness(1.08); }
+    .submit:disabled { opacity: .65; cursor: not-allowed; }
+
+    .message {
+      display: none;
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 9px;
+      background: rgba(66,232,224,.08);
+      color: #42e8e0;
+      font-size: 13px;
+    }
+
+    .login {
+      margin-top: 22px;
+      text-align: center;
+      color: #9aacc2;
+      font-size: 13px;
+    }
+
+    .disclaimer {
+      margin-top: 20px;
+      color: #71869f;
+      font-size: 11px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    @media(max-width: 750px) {
+      .page { grid-template-columns: 1fr; }
+      .info { padding: 28px; }
+      .logo { margin-bottom: 22px; }
+      .info h1 { font-size: 29px; }
+      .features { display: none; }
+      .form-area { padding: 30px 25px; }
+    }
+
+    @media(max-width: 450px) {
+      .form-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+
+    <section class="info">
+      <div class="logo">☁ Cloud<span>Nova</span></div>
+
+      <h1>Start your cloud journey today.</h1>
+
+      <p>
+        Create your CloudNova account and explore a modern
+        cloud infrastructure management experience.
+      </p>
+
+      <div class="features">
+        <div><span>✓</span> Modern cloud platform interface</div>
+        <div><span>✓</span> Dedicated user dashboard</div>
+        <div><span>✓</span> Simple account interface</div>
+        <div><span>✓</span> Cloud-ready application concept</div>
+      </div>
+    </section>
+
+    <section class="form-area">
+      <a class="back" href="index.html">← Back to Home</a>
+
+      <h2>Create Account</h2>
+      <p class="subtitle">Fill in your information to get started.</p>
+
+      <form id="registerForm">
+        <div class="form-grid">
+
+          <div class="field">
+            <label for="fullName">Full Name</label>
+            <input
+              type="text"
+              id="fullName"
+              name="fullName"
+              placeholder="Your full name"
+              autocomplete="name"
+              minlength="3"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="email">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="you@example.com"
+              autocomplete="email"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="password">Password</label>
+            <div class="password-wrap">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Create password"
+                autocomplete="new-password"
+                minlength="8"
+                required
+              >
+              <button type="button" class="show-password" data-target="password">Show</button>
+            </div>
+
+            <div class="strength">
+              <div class="strength-bar" id="strengthBar"></div>
+            </div>
+            <small class="strength-text" id="strengthText">Password strength</small>
+          </div>
+
+          <div class="field">
+            <label for="confirmPassword">Confirm Password</label>
+            <div class="password-wrap">
+              <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                placeholder="Repeat password"
+                autocomplete="new-password"
+                minlength="8"
+                required
+              >
+              <button type="button" class="show-password" data-target="confirmPassword">Show</button>
+            </div>
+          </div>
+
+        </div>
+
+        <label class="terms">
+          <input type="checkbox" id="terms" required>
+          <span>
+            I agree to the CloudNova Terms and Conditions and
+            understand this is a learning project.
+          </span>
+        </label>
+
+        <button class="submit" type="submit">Create Account →</button>
+
+        <div class="message" id="message" role="status" aria-live="polite"></div>
+      </form>
+
+      <div class="login">
+        Already have an account?
+        <a href="login.html">Sign In</a>
+      </div>
+
+      <p class="disclaimer">
+        This frontend form connects to the CloudNova backend
+        for secure account registration.
+      </p>
+    </section>
+
+  </main>
+
+  <script>
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirmPassword");
+    const message = document.getElementById("message");
+    const strengthBar = document.getElementById("strengthBar");
+    const strengthText = document.getElementById("strengthText");
+    const registerForm = document.getElementById("registerForm");
+    const submitButton = registerForm.querySelector(".submit");
+
+    // Show and hide password fields
+    document.querySelectorAll(".show-password").forEach(function(button) {
+      button.addEventListener("click", function() {
+        const field = document.getElementById(button.dataset.target);
+        const showing = field.type === "text";
+
+        field.type = showing ? "password" : "text";
+        button.textContent = showing ? "Show" : "Hide";
+      });
+    });
+
+    // Password strength indicator
+    password.addEventListener("input", function() {
+      const value = password.value;
+      let score = 0;
+
+      if (value.length >= 8) score++;
+      if (/[A-Z]/.test(value)) score++;
+      if (/[0-9]/.test(value)) score++;
+      if (/[^A-Za-z0-9]/.test(value)) score++;
+
+      const widths = ["0%", "25%", "50%", "75%", "100%"];
+      const labels = [
+        "Password strength",
+        "Weak password",
+        "Fair password",
+        "Good password",
+        "Strong password"
+      ];
+
+      strengthBar.style.width = widths[score];
+      strengthText.textContent = labels[score];
+    });
+
+    // Real backend registration
+    registerForm.addEventListener("submit", async function(event) {
+      event.preventDefault();
+
+      message.style.display = "block";
+      message.textContent = "";
+
+      if (password.value !== confirmPassword.value) {
+        message.textContent = "Passwords do not match. Please check again.";
+        return;
+      }
+
+      if (!document.getElementById("terms").checked) {
+        message.textContent = "Please accept the terms to continue.";
+        return;
+      }
+
+      submitButton.disabled = true;
+      submitButton.textContent = "Creating Account...";
+
+      try {
+        const response = await fetch("/api/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            fullName: document.getElementById("fullName").value,
+            email: document.getElementById("email").value,
+            password: password.value,
+            confirmPassword: confirmPassword.value
+          })
+        });
+
+        const result = await response.json();
+
+        message.textContent = result.message;
+
+        if (result.success) {
+          message.style.color = "#42e8e0";
+          registerForm.reset();
+
+          strengthBar.style.width = "0%";
+          strengthText.textContent = "Password strength";
+
+          submitButton.textContent = "Account Created!";
+
+          setTimeout(function() {
+            window.location.href = "login.html";
+          }, 1800);
+
+        } else {
+          submitButton.disabled = false;
+          submitButton.textContent = "Create Account →";
+        }
+
+      } catch (error) {
+        console.error("Registration error:", error);
+
+        message.textContent =
+          "Unable to connect to server. Please try again.";
+
+        submitButton.disabled = false;
+        submitButton.textContent = "Create Account →";
+      }
+    });
+  </script>
+</body>
+</html>

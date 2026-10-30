@@ -1,0 +1,1162 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CloudNova | Modern Cloud Infrastructure</title>
+<meta name="description" content="CloudNova provides modern cloud infrastructure, Linux server deployment, database solutions and secure hosting.">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+    --bg: #071321;
+    --bg2: #0a192a;
+    --card: #10243a;
+    --cyan: #35d6d0;
+    --blue: #398bff;
+    --text: #f1f5f9;
+    --muted: #9aadc2;
+    --border: rgba(255,255,255,.09);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.container {
+    width: min(1160px, 90%);
+    margin: auto;
+}
+
+/* NAVBAR */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(7,19,33,.88);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+}
+
+.nav-content {
+    min-height: 78px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 900;
+    letter-spacing: -1px;
+}
+
+.logo span {
+    color: var(--cyan);
+}
+
+.nav-links {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+}
+
+.nav-links a {
+    color: #b7c5d5;
+    font-size: 13px;
+    font-weight: 600;
+    transition: .3s;
+}
+
+.nav-links a:hover {
+    color: var(--cyan);
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 21px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    transition: .3s;
+    border: 1px solid transparent;
+}
+
+.btn-primary {
+    background: var(--cyan);
+    color: #061521;
+}
+
+.btn-primary:hover {
+    background: #67eee8;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(53,214,208,.2);
+}
+
+.btn-outline {
+    border-color: var(--border);
+    color: white;
+}
+
+.btn-outline:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+}
+
+.menu-toggle {
+    display: none;
+    color: white;
+    background: none;
+    border: 0;
+    font-size: 27px;
+}
+
+/* HERO */
+
+.hero {
+    position: relative;
+    overflow: hidden;
+    padding: 105px 0 100px;
+    background:
+        radial-gradient(ellipse at 80% 35%, rgba(39,126,190,.20), transparent 38%),
+        linear-gradient(120deg, #071321, #0c2035);
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 13px;
+    border: 1px solid rgba(53,214,208,.25);
+    background: rgba(53,214,208,.07);
+    color: var(--cyan);
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 25px;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 12px var(--cyan);
+}
+
+.hero h1 {
+    font-size: clamp(40px, 5.3vw, 67px);
+    line-height: 1.09;
+    letter-spacing: -3px;
+    font-weight: 900;
+    margin-bottom: 24px;
+}
+
+.gradient-text {
+    background: linear-gradient(90deg, var(--cyan), #65a8ff);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.hero-description {
+    color: var(--muted);
+    max-width: 540px;
+    font-size: 15px;
+    line-height: 1.9;
+    margin-bottom: 32px;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 38px;
+}
+
+.hero-note {
+    color: #7f93a9;
+    font-size: 12px;
+}
+
+.hero-visual {
+    position: relative;
+    padding: 15px;
+}
+
+.terminal {
+    background: rgba(12,29,48,.95);
+    border: 1px solid rgba(53,214,208,.22);
+    border-radius: 17px;
+    overflow: hidden;
+    box-shadow: 0 25px 80px rgba(0,0,0,.4);
+    transform: perspective(1000px) rotateY(-5deg);
+    animation: float 5s ease-in-out infinite;
+}
+
+.terminal-top {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 16px 19px;
+    border-bottom: 1px solid var(--border);
+    color: #8ca2b8;
+    font-size: 11px;
+}
+
+.circle {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+}
+
+.red { background: #ff6464; }
+.yellow { background: #ffc857; }
+.green { background: #43d69b; }
+
+.terminal-body {
+    padding: 26px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    line-height: 2.2;
+    color: #a8bed3;
+}
+
+.terminal-body .command {
+    color: var(--cyan);
+}
+
+.terminal-body .success {
+    color: #55dba5;
+}
+
+.terminal-body .comment {
+    color: #71879e;
+}
+
+.terminal-stats {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 12px;
+    padding: 0 20px 20px;
+}
+
+.mini-stat {
+    padding: 15px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,.025);
+    border-radius: 10px;
+}
+
+.mini-stat small {
+    color: var(--muted);
+    display: block;
+    font-size: 10px;
+}
+
+.mini-stat strong {
+    color: var(--cyan);
+    font-size: 19px;
+}
+
+@keyframes float {
+    0%,100% { transform: translateY(0) perspective(1000px) rotateY(-5deg); }
+    50% { transform: translateY(-12px) perspective(1000px) rotateY(-5deg); }
+}
+
+/* TRUST BAR */
+
+.trust {
+    background: #091827;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 25px 0;
+}
+
+.trust-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.trust-label {
+    color: #8296ab;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.tech-name {
+    color: #b6c6d6;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+/* COMMON SECTION */
+
+section {
+    padding: 95px 0;
+}
+
+.section-heading {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto 48px;
+}
+
+.section-tag {
+    color: var(--cyan);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.section-heading h2 {
+    font-size: clamp(29px, 4vw, 42px);
+    line-height: 1.2;
+    letter-spacing: -1.5px;
+    margin: 13px 0;
+}
+
+.section-heading p {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+/* SERVICES */
+
+.services {
+    background: var(--bg2);
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 19px;
+}
+
+.service-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 29px;
+    border-radius: 13px;
+    transition: .3s;
+}
+
+.service-card:hover {
+    transform: translateY(-7px);
+    border-color: rgba(53,214,208,.5);
+    box-shadow: 0 18px 40px rgba(0,0,0,.2);
+}
+
+.service-icon {
+    width: 49px;
+    height: 49px;
+    display: grid;
+    place-items: center;
+    background: rgba(53,214,208,.1);
+    color: var(--cyan);
+    border-radius: 12px;
+    font-size: 23px;
+    margin-bottom: 21px;
+}
+
+.service-card h3 {
+    font-size: 17px;
+    margin-bottom: 11px;
+}
+
+.service-card p {
+    color: var(--muted);
+    font-size: 13px;
+    min-height: 65px;
+}
+
+.learn-more {
+    display: inline-block;
+    margin-top: 18px;
+    color: var(--cyan);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+/* PROJECTS */
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 20px;
+}
+
+.project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    overflow: hidden;
+    transition: .3s;
+}
+
+.project-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(53,214,208,.45);
+}
+
+.project-image {
+    min-height: 180px;
+    display: grid;
+    place-items: center;
+    font-size: 58px;
+    background:
+        radial-gradient(circle at center, rgba(53,214,208,.17), transparent 65%),
+        #102d43;
+}
+
+.project-info {
+    padding: 23px;
+}
+
+.project-category {
+    color: var(--cyan);
+    font-size: 10px;
+    letter-spacing: 1px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.project-info h3 {
+    margin: 9px 0;
+    font-size: 17px;
+}
+
+.project-info p {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 17px;
+}
+
+.project-tags span {
+    background: rgba(255,255,255,.06);
+    padding: 5px 9px;
+    border-radius: 5px;
+    color: #b8c8d7;
+    font-size: 10px;
+}
+
+/* WHY US */
+
+.why-us {
+    background: var(--bg2);
+}
+
+.why-grid {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 17px;
+}
+
+.why-card {
+    text-align: center;
+    padding: 26px 18px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    border-radius: 12px;
+}
+
+.why-card .symbol {
+    color: var(--cyan);
+    font-size: 28px;
+    margin-bottom: 13px;
+}
+
+.why-card h3 {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.why-card p {
+    font-size: 11px;
+    color: var(--muted);
+}
+
+/* WORKFLOW */
+
+.workflow {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 25px;
+}
+
+.step {
+    padding: 25px;
+    border-left: 2px solid var(--cyan);
+    background: rgba(255,255,255,.025);
+}
+
+.step-number {
+    font-size: 12px;
+    color: var(--cyan);
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.step h3 {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+.step p {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+/* CTA */
+
+.cta {
+    padding: 75px 0;
+    background:
+        radial-gradient(ellipse at 50% 100%, rgba(53,214,208,.15), transparent 65%),
+        #10243a;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+
+.cta-content {
+    text-align: center;
+    max-width: 720px;
+    margin: auto;
+}
+
+.cta h2 {
+    font-size: clamp(29px,4vw,43px);
+    line-height: 1.2;
+    margin-bottom: 15px;
+}
+
+.cta p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 26px;
+}
+
+/* FOOTER */
+
+footer {
+    background: #050d18;
+    padding: 55px 0 20px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 35px;
+    padding-bottom: 40px;
+}
+
+.footer-about p {
+    color: var(--muted);
+    font-size: 12px;
+    max-width: 280px;
+    margin-top: 15px;
+}
+
+.footer-column h4 {
+    font-size: 13px;
+    margin-bottom: 17px;
+}
+
+.footer-column a {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 11px;
+    transition: .3s;
+}
+
+.footer-column a:hover {
+    color: var(--cyan);
+}
+
+.footer-bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    color: #7f93a9;
+    font-size: 11px;
+}
+
+.footer-bottom strong {
+    color: var(--cyan);
+}
+
+/* REVEAL ANIMATION */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity .7s ease, transform .7s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* RESPONSIVE */
+
+@media(max-width: 900px) {
+    .hero-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-visual {
+        max-width: 600px;
+        margin: auto;
+        width: 100%;
+    }
+
+    .services-grid,
+    .projects-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .why-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .footer-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+}
+
+@media(max-width: 650px) {
+    .nav-content {
+        min-height: 68px;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 68px;
+        left: 0;
+        width: 100%;
+        padding: 22px 5%;
+        background: #091827;
+        border-bottom: 1px solid var(--border);
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 19px;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-buttons .btn {
+        padding: 9px 11px;
+        font-size: 11px;
+    }
+
+    .hero {
+        padding: 75px 0;
+    }
+
+    .hero h1 {
+        letter-spacing: -1.5px;
+    }
+
+    .terminal-body {
+        font-size: 10px;
+        padding: 17px;
+    }
+
+    .services-grid,
+    .projects-grid,
+    .why-grid,
+    .workflow,
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+
+    section {
+        padding: 70px 0;
+    }
+
+    .trust-content {
+        justify-content: center;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="container nav-content">
+
+        <a href="index.html" class="logo">Cloud<span>Nova.</span></a>
+
+        <nav class="nav-links" id="navLinks">
+            <a href="#home">Home</a>
+            <a href="#services">Services</a>
+            <a href="#projects">Projects</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="nav-buttons">
+            <a href="login.html" class="btn btn-outline">Login</a>
+            <a href="register.html" class="btn btn-primary">Get Started</a>
+        </div>
+
+        <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+    </div>
+</header>
+
+<main>
+
+<!-- HERO -->
+<section class="hero" id="home">
+    <div class="container hero-grid">
+
+        <div class="hero-content reveal">
+            <div class="eyebrow">
+                <span class="status-dot"></span>
+                NEXT-GENERATION CLOUD INFRASTRUCTURE
+            </div>
+
+            <h1>
+                Build Your Future
+                With <span class="gradient-text">Cloud Technology.</span>
+            </h1>
+
+            <p class="hero-description">
+                Empower your digital world with modern cloud infrastructure,
+                powerful Linux servers, secure databases and scalable web solutions.
+                Build smarter. Deploy faster. Grow without limits.
+            </p>
+
+            <div class="hero-actions">
+                <a href="#services" class="btn btn-primary">Explore Services →</a>
+                <a href="#projects" class="btn btn-outline">View Projects</a>
+            </div>
+
+            <div class="hero-note">
+                Modern Infrastructure · Secure Systems · Scalable Solutions
+            </div>
+        </div>
+
+        <div class="hero-visual reveal">
+            <div class="terminal">
+                <div class="terminal-top">
+                    <span class="circle red"></span>
+                    <span class="circle yellow"></span>
+                    <span class="circle green"></span>
+                    <span style="margin-left:10px;">cloudnova-server — terminal</span>
+                </div>
+
+                <div class="terminal-body">
+                    <div><span class="command">$</span> cloudnova status</div>
+                    <div class="success">✓ Cloud infrastructure initialized</div>
+                    <div class="success">✓ Linux server configured</div>
+                    <div class="success">✓ Database connection ready</div>
+                    <div class="success">✓ Security checks completed</div>
+                    <br>
+                    <div class="comment"># System information</div>
+                    <div>Server: Ubuntu Linux</div>
+                    <div>Database: MySQL</div>
+                    <div>Environment: Cloud</div>
+                    <div>Platform: AWS EC2</div>
+                    <br>
+                    <div><span class="command">$</span> <span class="success">System ready_</span></div>
+                </div>
+
+                <div class="terminal-stats">
+                    <div class="mini-stat">
+                        <small>Infrastructure</small>
+                        <strong>Cloud</strong>
+                    </div>
+                    <div class="mini-stat">
+                        <small>Platform</small>
+                        <strong>Linux</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- TECHNOLOGY BAR -->
+<div class="trust">
+    <div class="container trust-content">
+        <span class="trust-label">TECHNOLOGIES WE WORK WITH</span>
+        <span class="tech-name">AWS</span>
+        <span class="tech-name">LINUX</span>
+        <span class="tech-name">MYSQL</span>
+        <span class="tech-name">NODE.JS</span>
+        <span class="tech-name">NGINX</span>
+    </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+    <div class="container">
+
+        <div class="section-heading reveal">
+            <span class="section-tag">What We Offer</span>
+            <h2>Powerful Services for a Digital World</h2>
+            <p>
+                Explore modern infrastructure solutions designed to help
+                websites and applications run smoothly and securely.
+            </p>
+        </div>
+
+        <div class="services-grid">
+
+            <article class="service-card reveal">
+                <div class="service-icon">☁</div>
+                <h3>Cloud Hosting</h3>
+                <p>Deploy websites and applications on scalable cloud infrastructure with reliable server resources.</p>
+                <a href="#contact" class="learn-more">Explore Service →</a>
+            </article>
+
+            <article class="service-card reveal">
+                <div class="service-icon">▣</div>
+                <h3>Linux Server Management</h3>
+                <p>Linux server installation, configuration, administration and application deployment.</p>
+                <a href="#contact" class="learn-more">Explore Service →</a>
+            </article>
+
+            <article class="service-card reveal">
+                <div class="service-icon">▤</div>
+                <h3>Database Management</h3>
+                <p>Structured database solutions using MySQL and PostgreSQL for application data.</p>
+                <a href="#contact" class="learn-more">Explore Service →</a>
+            </article>
+
+            <article class="service-card reveal">
+                <div class="service-icon">⌘</div>
+                <h3>Web Development</h3>
+                <p>Modern responsive websites and web applications with clean user interfaces.</p>
+                <a href="#contact" class="learn-more">Explore Service →</a>
+            </article>
+
+            <article class="service-card reveal">
+                <div class="service-icon">⬡</div>
+                <h3>Cloud Security</h3>
+                <p>Security-focused configurations, access controls and infrastructure protection practices.</p>
+                <a href="#contact" class="learn-more">Explore Service →</a>
+            </article>
+
+            <article class="service-card reveal">
+                <div class="service-icon">↗</div>
+                <h3>Deployment Solutions</h3>
+                <p>Application deployment workflows to help move projects from development to production.</p>
+                <a href="#contact" class="learn-more">Explore Service →</a>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+    <div class="container">
+
+        <div class="section-heading reveal">
+            <span class="section-tag">Our Work</span>
+            <h2>Explore Our Featured Projects</h2>
+            <p>
+                Examples of cloud and web technologies used to build
+                modern digital infrastructure.
+            </p>
+        </div>
+
+        <div class="projects-grid">
+
+            <article class="project-card reveal">
+                <div class="project-image">☁</div>
+                <div class="project-info">
+                    <span class="project-category">Cloud Infrastructure</span>
+                    <h3>Cloud Web Hosting</h3>
+                    <p>A cloud-hosted website environment built using Linux server infrastructure.</p>
+                    <div class="project-tags">
+                        <span>AWS EC2</span>
+                        <span>Ubuntu</span>
+                        <span>Nginx</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card reveal">
+                <div class="project-image">▤</div>
+                <div class="project-info">
+                    <span class="project-category">Database Systems</span>
+                    <h3>Database Integration</h3>
+                    <p>A web application architecture connected to a relational database system.</p>
+                    <div class="project-tags">
+                        <span>MySQL</span>
+                        <span>Node.js</span>
+                        <span>Express</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card reveal">
+                <div class="project-image">⌘</div>
+                <div class="project-info">
+                    <span class="project-category">Web Application</span>
+                    <h3>Cloud Management Portal</h3>
+                    <p>A dashboard interface concept for viewing infrastructure and application information.</p>
+                    <div class="project-tags">
+                        <span>HTML</span>
+                        <span>CSS</span>
+                        <span>JavaScript</span>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+<!-- WHY CLOUDNOVA -->
+<section class="why-us" id="about">
+    <div class="container">
+
+        <div class="section-heading reveal">
+            <span class="section-tag">Why CloudNova</span>
+            <h2>Infrastructure Built Around Your Goals</h2>
+            <p>
+                Our approach focuses on the essential qualities of
+                a modern digital infrastructure.
+            </p>
+        </div>
+
+        <div class="why-grid">
+
+            <div class="why-card reveal">
+                <div class="symbol">◈</div>
+                <h3>Security Focus</h3>
+                <p>Security-conscious infrastructure configurations.</p>
+            </div>
+
+            <div class="why-card reveal">
+                <div class="symbol">⚡</div>
+                <h3>Performance</h3>
+                <p>Efficient server and application architecture.</p>
+            </div>
+
+            <div class="why-card reveal">
+                <div class="symbol">↗</div>
+                <h3>Scalability</h3>
+                <p>Infrastructure designed to grow with requirements.</p>
+            </div>
+
+            <div class="why-card reveal">
+                <div class="symbol">◇</div>
+                <h3>Modern Technology</h3>
+                <p>Tools and platforms used in today's cloud environments.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- WORKFLOW -->
+<section>
+    <div class="container">
+
+        <div class="section-heading reveal">
+            <span class="section-tag">Our Approach</span>
+            <h2>From Idea to Cloud Deployment</h2>
+            <p>A simple workflow for planning and delivering infrastructure solutions.</p>
+        </div>
+
+        <div class="workflow">
+
+            <div class="step reveal">
+                <span class="step-number">STEP 01</span>
+                <h3>Plan & Design</h3>
+                <p>Understand project requirements and design the infrastructure architecture.</p>
+            </div>
+
+            <div class="step reveal">
+                <span class="step-number">STEP 02</span>
+                <h3>Build & Deploy</h3>
+                <p>Configure servers, databases and application components.</p>
+            </div>
+
+            <div class="step reveal">
+                <span class="step-number">STEP 03</span>
+                <h3>Monitor & Improve</h3>
+                <p>Review system performance and improve the deployment over time.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="contact">
+    <div class="container cta-content reveal">
+        <span class="section-tag">Let's Build Something Great</span>
+        <h2>Ready to Explore the Power of Cloud?</h2>
+        <p>
+            Start your journey with CloudNova and discover modern
+            cloud infrastructure, web applications and database solutions.
+        </p>
+        <a href="register.html" class="btn btn-primary">Create Your Account →</a>
+    </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+    <div class="container">
+
+        <div class="footer-grid">
+
+            <div class="footer-about">
+                <a href="index.html" class="logo">Cloud<span>Nova.</span></a>
+                <p>
+                    Building a modern digital experience through cloud
+                    infrastructure, Linux servers and database technologies.
+                </p>
+            </div>
+
+            <div class="footer-column">
+                <h4>Explore</h4>
+                <a href="#home">Home</a>
+                <a href="#services">Our Services</a>
+                <a href="#projects">Projects</a>
+                <a href="#about">About Us</a>
+            </div>
+
+            <div class="footer-column">
+                <h4>Account</h4>
+                <a href="login.html">Login</a>
+                <a href="register.html">Register</a>
+                <a href="user-dashboard.html">User Dashboard</a>
+                <a href="admin-dashboard.html">Admin Dashboard</a>
+            </div>
+
+            <div class="footer-column">
+                <h4>Technologies</h4>
+                <a href="#services">Cloud Computing</a>
+                <a href="#services">Linux Servers</a>
+                <a href="#services">Database Systems</a>
+                <a href="#services">Web Development</a>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <span>© <span id="year"></span> CloudNova. All rights reserved.</span>
+            <span>Designed & Developed by <strong>Ghulam Yasir</strong></span>
+        </div>
+
+    </div>
+</footer>
+
+<script>
+// Dynamic year
+document.getElementById("year").textContent = new Date().getFullYear();
+
+// Mobile navigation
+const menuToggle = document.getElementById("menuToggle");
+const navLinks = document.getElementById("navLinks");
+
+menuToggle.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
+    menuToggle.textContent =
+        navLinks.classList.contains("active") ? "✕" : "☰";
+});
+
+// Close mobile menu after clicking a link
+document.querySelectorAll(".nav-links a").forEach(link => {
+    link.addEventListener("click", () => {
+        navLinks.classList.remove("active");
+        menuToggle.textContent = "☰";
+    });
+});
+
+// Scroll reveal animation
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.12 });
+
+document.querySelectorAll(".reveal").forEach(element => {
+    observer.observe(element);
+});
+</script>
+
+</body>
+</html>
